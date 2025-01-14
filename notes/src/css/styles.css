@@ -9,6 +9,10 @@
   --hover-color: #f5f5f5;
   --error-color: #dc3545;
   --success-color: #28a745;
+  --secondary-text-color: #666666;
+  --date-color: #888888;
+  --meta-color: #666666;
+  --link-color: #0366d6;
 }
 
 /* 无障碍跳转链接 */
@@ -125,19 +129,71 @@
 }
 
 .note-item {
-  padding: 10px 15px;
+  padding: 12px 15px;
   margin: 5px 0;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .note-item:hover {
   background-color: var(--hover-color);
+  border-color: var(--border-color);
 }
 
 .note-item.active {
   background-color: var(--primary-color);
+  color: white;
+}
+
+.note-item.active .note-date {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.note-title {
+  font-size: 14px;
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+.note-date {
+  font-size: 12px;
+  color: var(--date-color);
+}
+
+.note-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--meta-color);
+}
+
+.note-size {
+  color: var(--meta-color);
+}
+
+.note-link {
+  color: var(--link-color);
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.note-link:hover {
+  opacity: 1;
+}
+
+.active .note-title,
+.active .note-date,
+.active .note-meta,
+.active .note-size,
+.active .note-link {
   color: white;
 }
 

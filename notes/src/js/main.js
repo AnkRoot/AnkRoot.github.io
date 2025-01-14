@@ -7,6 +7,12 @@ class NotesApp {
     this.sidebar = document.querySelector('.sidebar');
     this.notesPath = '../NotesBook/';
     this.currentNote = null;
+    // GitHub相关配置
+    this.githubConfig = {
+      owner: window.location.host.replace(/\.github\.io$/, ''),
+      repo: window.location.host,
+      branch: 'main',
+    };
 
     this.initEventListeners();
     this.init();
@@ -48,36 +54,61 @@ class NotesApp {
 
   async loadNotesList() {
     try {
-      // 获取笔记列表
-      const response = await fetch(this.notesPath);
-      if (!response.ok) throw new Error('Failed to load notes list');
+      const notesList = await this.fetchDirectoryContents('notes/NotesBook');
+      if (!notesList) {
+        throw new Error('Failed to load notes list');
+      }
 
-      const text = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/html');
-      const links = Array.from(doc.querySelectorAll('a'))
-        .filter(link => link.href.endsWith('.md'))
-        .map(link => {
-          return {
-            name: decodeURIComponent(link.textContent),
-            path: link.href,
-          };
-        });
-
-      this.renderNotesList(links);
+      const mdFiles = this.filterMarkdownFiles(notesList);
+      this.renderNotesList(mdFiles);
     } catch (error) {
       console.error('Error loading notes list:', error);
       this.noteList.innerHTML = '<div class="error">加载笔记列表失败</div>';
     }
   }
 
+  async fetchDirectoryContents(path) {
+    try {
+      const { owner, repo, branch } = this.githubConfig;
+      const response = await fetch(`https://github.com/${owner}/${repo}/tree-commit-info/${branch}/${path}`, {
+        headers: {
+          'x-requested-with': 'XMLHttpRequest',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch directory contents');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching directory contents:', error);
+      return null;
+    }
+  }
+
+  filterMarkdownFiles(contents) {
+    return Object.entries(contents)
+      .filter(([filename]) => filename.endsWith('.md'))
+      .map(([filename, info]) => ({
+        name: decodeURIComponent(filename.replace('.md', '')),
+        path: `${this.notesPath}${filename}`,
+      }));
+  }
+
   renderNotesList(notes) {
+    if (!notes.length) {
+      this.noteList.innerHTML = '<div class="note-item">暂无笔记</div>';
+      return;
+    }
+
     this.noteList.innerHTML = notes
       .map(
         note => `
-            <div class="note-item" data-path="${note.path}">
-                ${note.name}
-            </div>
+          <div class="note-item" data-path="${note.path}">
+            ${note.name}
+          </div>
         `
       )
       .join('');
