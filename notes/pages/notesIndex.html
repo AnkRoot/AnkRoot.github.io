@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Ank Notes - 一个简洁的Markdown笔记查看器" />
+    <meta name="theme-color" content="#2196f3" />
+    <title>Ank Notes</title>
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="../src/css/reset.css" as="style" />
+    <link rel="preload" href="../src/css/styles.css" as="style" />
+
+    <!-- 关键样式 -->
+    <link rel="stylesheet" href="../src/css/reset.css" />
+    <link rel="stylesheet" href="../src/css/styles.css" />
+
+    <!-- 非关键样式异步加载 -->
+    <link rel="stylesheet" href="../src/css/lib/github.min.css" media="print" onload="this.media='all'" />
+
+    <!-- 初始化marked -->
+    <script>
+      window.marked = null;
+      window.initMarked = () => (window.marked = marked.parse);
+    </script>
+
+    <!-- 延迟加载非关键脚本 -->
+    <script src="../src/js/lib/marked.min.js" defer onload="initMarked()"></script>
+    <script src="../src/js/lib/highlight.min.js" defer></script>
+    <script src="../src/js/main.js" defer></script>
+  </head>
+  <body>
+    <!-- 无障碍跳转链接 -->
+    <a href="#noteContent" class="skip-link">跳到主要内容</a>
+
+    <div class="container" role="main">
+      <!-- 左侧笔记目录 -->
+      <div class="sidebar" role="navigation" aria-label="笔记目录">
+        <div class="sidebar-header">
+          <h2>笔记目录</h2>
+        </div>
+        <div class="note-list" id="noteList" role="list" aria-label="笔记列表">
+          <!-- 笔记列表将通过JavaScript动态生成 -->
+          <div class="loading">加载中...</div>
+        </div>
+      </div>
+
+      <!-- 右侧内容区域 -->
+      <div class="content">
+        <div class="content-header">
+          <button id="toggleSidebar" class="toggle-sidebar" aria-label="切换侧边栏" aria-expanded="true">
+            <span></span>
+          </button>
+          <h1 id="currentNoteTitle">欢迎使用Ank Notes</h1>
+        </div>
+        <div class="markdown-body" id="noteContent" role="article" aria-label="笔记内容">
+          <!-- Markdown内容将在这里渲染 -->
+          <div class="welcome-message">
+            <h2>欢迎使用Ank Notes</h2>
+            <p>请从左侧选择笔记开始阅读</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 无JavaScript提示 -->
+    <noscript>
+      <div class="noscript-message">抱歉，Ank Notes 需要启用 JavaScript 才能运行。</div>
+    </noscript>
+  </body>
+</html>
