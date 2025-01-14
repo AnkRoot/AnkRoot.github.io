@@ -9,6 +9,7 @@
 - ⚡️ 快速加载，支持离线访问
 - ♿️ 无障碍支持，适合所有用户
 - 🎨 优雅的代码高亮
+- 📂 支持无限层级目录
 - 🔍 实时笔记搜索（计划中）
 
 ## 技术栈
@@ -16,6 +17,7 @@
 - HTML5 + CSS3 + ES6+
 - Marked.js - Markdown 解析
 - Highlight.js - 代码高亮
+- GitHub REST API - 目录获取
 - 纯前端实现，不依赖 Node.js 环境
 
 ## 项目结构
@@ -23,6 +25,10 @@
 ```
 notes/
 ├── NotesBook/        # 存放Markdown笔记文件
+│   ├── 目录1/        # 支持多层目录
+│   │   ├── 子目录/   # 无限层级嵌套
+│   │   └── 文件.md
+│   └── 文件.md
 ├── pages/            # 页面文件
 │   └── notesIndex.html
 ├── src/              # 源代码
@@ -47,6 +53,9 @@ notes/
 - [x] 无障碍支持
 - [x] 键盘导航
 - [x] 打印优化
+- [x] 目录嵌套支持
+- [x] 文件大小显示
+- [x] GitHub 链接集成
 
 ### 开发计划
 
@@ -57,19 +66,29 @@ notes/
 - [ ] 本地存储支持
 - [ ] 自定义主题
 - [ ] 多语言支持
+- [ ] 目录展开状态记忆
+- [ ] 文件拖放排序
 
 ## 使用说明
 
 ### 添加笔记
 
-1. 在`NotesBook`目录下创建`.md`文件
-2. 使用标准 Markdown 语法编写笔记
-3. 支持的功能：
+1. 在`NotesBook`目录下创建目录和`.md`文件
+2. 支持任意层级的目录结构
+3. 使用标准 Markdown 语法编写笔记
+4. 支持的功能：
    - 标准 Markdown 语法
    - GitHub Flavored Markdown
    - 代码块语法高亮
    - 表格支持
    - 任务列表
+
+### 目录功能
+
+1. 点击目录图标或名称展开/折叠
+2. 支持无限层级嵌套
+3. 显示文件大小
+4. 一键跳转 GitHub 查看
 
 ### 部署说明
 
@@ -88,6 +107,7 @@ notes/
   --primary-color: #2196f3; /* 主题色 */
   --bg-color: #ffffff; /* 背景色 */
   --text-color: #333333; /* 文字颜色 */
+  --directory-hover-color: #f0f7ff; /* 目录悬停颜色 */
   /* 其他变量... */
 }
 ```
@@ -97,6 +117,14 @@ notes/
 修改`src/js/main.js`中的配置：
 
 ```javascript
+// GitHub配置
+this.githubConfig = {
+  owner: 'your-username',
+  repo: 'your-username.github.io',
+  branch: 'main',
+};
+
+// Markdown配置
 marked.setOptions({
   breaks: false, // 是否支持GitHub的换行符
   pedantic: false, // 是否尽可能地兼容 markdown.pl
@@ -120,6 +148,7 @@ marked.setOptions({
 - 预加载关键资源
 - 代码压缩和优化
 - 缓存策略优化
+- 目录递归加载优化
 
 ## 无障碍支持
 
@@ -134,6 +163,7 @@ marked.setOptions({
 - [ ] 在某些浏览器上代码高亮可能有延迟
 - [ ] 移动端侧边栏动画可能不流畅
 - [ ] 打印时可能存在分页问题
+- [ ] 大型目录结构首次加载可能较慢
 
 ## 贡献指南
 

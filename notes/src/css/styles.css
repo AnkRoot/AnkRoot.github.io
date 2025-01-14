@@ -13,6 +13,7 @@
   --date-color: #888888;
   --meta-color: #666666;
   --link-color: #0366d6;
+  --directory-hover-color: #f0f7ff;
 }
 
 /* 无障碍跳转链接 */
@@ -129,15 +130,12 @@
 }
 
 .note-item {
-  padding: 12px 15px;
-  margin: 5px 0;
+  padding: 8px 15px;
+  margin: 2px 0;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.2s ease;
   border: 1px solid transparent;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 .note-item:hover {
@@ -145,24 +143,42 @@
   border-color: var(--border-color);
 }
 
-.note-item.active {
-  background-color: var(--primary-color);
-  color: white;
+.note-item.directory {
+  background-color: transparent;
 }
 
-.note-item.active .note-date {
-  color: rgba(255, 255, 255, 0.8);
+.note-item.directory:hover {
+  background-color: var(--directory-hover-color);
+}
+
+.note-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.directory-icon,
+.file-icon {
+  font-size: 16px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.directory > .note-header {
+  font-weight: 500;
+}
+
+.directory-content {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-top: 4px;
 }
 
 .note-title {
+  flex: 1;
   font-size: 14px;
   color: var(--text-color);
   word-break: break-word;
-}
-
-.note-date {
-  font-size: 12px;
-  color: var(--date-color);
 }
 
 .note-meta {
@@ -171,6 +187,7 @@
   gap: 8px;
   font-size: 12px;
   color: var(--meta-color);
+  padding-left: 28px;
 }
 
 .note-size {
@@ -190,7 +207,6 @@
 }
 
 .active .note-title,
-.active .note-date,
 .active .note-meta,
 .active .note-size,
 .active .note-link {
